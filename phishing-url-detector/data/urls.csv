@@ -1,0 +1,9 @@
+url,label
+http://google.com,0
+https://amazon.com,0
+http://192.168.0.1/login,1
+http://malicious-site.ru/bank/login.php,1
+https://secure-paypal.com.verify-security-session.com,1
+http://facebook.com,0
+http://free-money.ru/win/5000,1
+http://github.com,0
