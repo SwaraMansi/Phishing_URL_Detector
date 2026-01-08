@@ -2,29 +2,40 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 import pickle
+import os
+import sys
+
+# allow import from src
+sys.path.append(os.path.dirname(__file__))
 from extract_features import extract_features
 
-# Load dataset
-df = pd.read_csv("../data/urls.csv")
+BASE_DIR = os.path.dirname(__file__)
+DATA_PATH = os.path.join(BASE_DIR, "..", "data", "urls.csv")
+MODEL_DIR = os.path.join(BASE_DIR, "..", "model")
 
-# Feature extraction
+os.makedirs(MODEL_DIR, exist_ok=True)
+
+df = pd.read_csv(DATA_PATH)
+
 features = df["url"].apply(lambda u: extract_features(u))
 X = pd.DataFrame(list(features))
-y = df["label"]   # label = 1 (phishing), 0 (legitimate)
+y = df["label"]  # 1 = phishing, 0 = legitimate
 
-# Split dataset
+with open(os.path.join(MODEL_DIR, "feature_columns.pkl"), "wb") as f:
+    pickle.dump(X.columns.tolist(), f)
+
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.20, random_state=42
 )
 
-# Train Random Forest model
 model = RandomForestClassifier(n_estimators=200, random_state=42)
 model.fit(X_train, y_train)
 
-# Evaluate
 print("Training Accuracy:", model.score(X_train, y_train))
 print("Test Accuracy:", model.score(X_test, y_test))
 
-# Save model
-pickle.dump(model, open("../model/phishing_model.pkl", "wb"))
-print("Model saved to model/phishing_model.pkl")
+with open(os.path.join(MODEL_DIR, "phishing_model.pkl"), "wb") as f:
+    pickle.dump(model, f)
+
+print("Model and feature columns saved successfully.")
+
