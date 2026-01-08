@@ -1,29 +1,31 @@
 import streamlit as st
 import pickle
-import re
 import pandas as pd
+import os
+import sys
 
-# Load trained model
-with open("model/phishing_model.pkl", "rb") as f:
+# Add src to path
+sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
+
+from extract_features import extract_features
+
+# Load model safely
+MODEL_PATH = os.path.join(
+    os.path.dirname(__file__),
+    "model",
+    "phishing_model.pkl"
+)
+
+with open(MODEL_PATH, "rb") as f:
     model = pickle.load(f)
 
-st.set_page_config(page_title="Phishing URL Detector", layout="centered")
+st.set_page_config(page_title="Phishing URL Detector")
 
-st.title("🔐 Phishing URL Detection System")
-st.write("Enter a URL to check whether it is **Phishing** or **Legitimate**")
+st.title("🔐 Phishing URL Detector")
 
-url = st.text_input("Enter URL")
+url = st.text_input("Enter a URL")
 
-def extract_features(url):
-    features = {}
-    features["url_length"] = len(url)
-    features["has_https"] = 1 if "https" in url else 0
-    features["has_at"] = 1 if "@" in url else 0
-    features["has_hyphen"] = 1 if "-" in url else 0
-    features["num_dots"] = url.count(".")
-    return pd.DataFrame([features])
-
-if st.button("Check URL"):
+if st.button("Check"):
     if url.strip() == "":
         st.warning("Please enter a URL")
     else:
@@ -31,6 +33,6 @@ if st.button("Check URL"):
         prediction = model.predict(features)[0]
 
         if prediction == 1:
-            st.error("⚠️ Phishing URL Detected")
+            st.error("⚠️ Phishing URL")
         else:
             st.success("✅ Legitimate URL")
