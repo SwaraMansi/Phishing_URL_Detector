@@ -35,7 +35,8 @@ python src/predict.py
 Dataset
 Used the Kaggle Phishing URL Dataset.
 
-Tech Stack
+Tech Stack:
+
 Python
 Scikit-learn
 Pandas
