@@ -4,7 +4,7 @@ import re
 import pandas as pd
 
 # Load trained model
-with open("model.pkl", "rb") as f:
+with open("model/phishing_model.pkl", "rb") as f:
     model = pickle.load(f)
 
 st.set_page_config(page_title="Phishing URL Detector", layout="centered")
