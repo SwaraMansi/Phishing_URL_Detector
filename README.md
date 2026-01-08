@@ -23,16 +23,16 @@ The app predicts whether a URL is Phishing or Legitimate
 Deployed directly from GitHub with CI-based auto redeployment
 🔗 Live URL: https://phishingurldetector-nscpewvo5wobtcywj6dd8j.streamlit.app/
 
-1. Install requirements
+1. Install requirements:
 pip install -r requirements.txt
 
-2. Train model
+2. Train model:
 python src/train_model.py
 
-3. Predict URL
+3. Predict URL:
 python src/predict.py
 
-Dataset
+Dataset:
 Used the Kaggle Phishing URL Dataset.
 
 Tech Stack:
